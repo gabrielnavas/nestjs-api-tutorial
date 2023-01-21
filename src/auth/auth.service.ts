@@ -27,7 +27,7 @@ export class AuthService {
     }
 
     // send back the user
-    return { msg: 'hello' };
+    return userFound;
   }
 
   async signup(userDto: AuthDto) {
