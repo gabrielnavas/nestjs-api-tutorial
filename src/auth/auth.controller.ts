@@ -27,9 +27,10 @@ export class AuthController {
   }
 
   @Post('signin')
-  signin(@Body() dto: AuthDto) {
+  async signin(@Body() dto: AuthDto) {
     try {
-      return this.authService.signin(dto);
+      const result = await this.authService.signin(dto);
+      return { access_token: result.token };
     } catch (error) {
       if (error instanceof UserAlreadyExistsException) {
         throw new ForbiddenException(error.message);
