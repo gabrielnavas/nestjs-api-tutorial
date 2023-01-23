@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
-import { UserAlreadyExistsException } from './errors';
+import { UserAlreadyExistsException, UserNotFoundException } from './errors';
 
 @Controller('auth')
 export class AuthController {
@@ -32,7 +32,7 @@ export class AuthController {
       const result = await this.authService.signin(dto);
       return { access_token: result.token };
     } catch (error) {
-      if (error instanceof UserAlreadyExistsException) {
+      if (error instanceof UserNotFoundException) {
         throw new ForbiddenException(error.message);
       }
       throw new InternalServerErrorException('server error');
