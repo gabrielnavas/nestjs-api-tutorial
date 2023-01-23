@@ -3,6 +3,8 @@ import {
   Body,
   Controller,
   ForbiddenException,
+  HttpCode,
+  HttpStatus,
   InternalServerErrorException,
   Post,
 } from '@nestjs/common';
@@ -26,6 +28,7 @@ export class AuthController {
     }
   }
 
+  @HttpCode(HttpStatus.OK)
   @Post('signin')
   async signin(@Body() dto: AuthDto) {
     try {
