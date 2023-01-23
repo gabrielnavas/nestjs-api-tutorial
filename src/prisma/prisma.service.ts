@@ -14,4 +14,12 @@ export class PrismaService extends PrismaClient {
       },
     });
   }
+
+  clearDb() {
+    // TODO: Check is is test env for more security
+    return this.$transaction([
+      this.bookmark.deleteMany(),
+      this.user.deleteMany(),
+    ]);
+  }
 }
