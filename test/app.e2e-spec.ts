@@ -43,7 +43,8 @@ describe('App e2e', () => {
           .spec()
           .post('http://localhost:3333/auth/signup')
           .withBody(dto)
-          .expectStatus(201);
+          .expectStatus(201)
+          .inspect();
       });
     });
     describe('Signin', () => {
