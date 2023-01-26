@@ -5,7 +5,7 @@ import { AppModule } from '../src/app.module';
 
 import * as pactum from 'pactum';
 import { AuthDto } from 'src/auth/dto';
-import { CreateBookmarkDto } from 'src/bookmark/dto';
+import { CreateBookmarkDto, EditBookmarkDto } from 'src/bookmark/dto';
 
 describe('App e2e', () => {
   let app: INestApplication;
@@ -200,11 +200,27 @@ describe('App e2e', () => {
             Authorization: `Bearer $S{userAccessToken}`,
           })
           .get(`/bookmarks/$S{bookmarkId}`)
-          .expectStatus(200);
+          .expectStatus(200)
+          .expectBodyContains('$S{bookmarkId}');
       });
     });
     describe('Edit bookmark', () => {
-      it.todo('should edit bookmark by id');
+      it('should edit bookmark by id', async () => {
+        const dto: EditBookmarkDto = {
+          description: 'any_description',
+          link: 'http://link.com',
+          title: 'any_title',
+        };
+        await pactum
+          .spec()
+          .withHeaders({
+            Authorization: `Bearer $S{userAccessToken}`,
+          })
+          .patch(`/bookmarks/$S{bookmarkId}`)
+          .withBody(dto)
+          .expectStatus(200)
+          .expectBodyContains('$S{bookmarkId}');
+      });
     });
     describe('Delete bookmark', () => {
       it.todo('should delete bookmark by id');

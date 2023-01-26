@@ -46,13 +46,13 @@ export class BookmarkService {
     return bookmark;
   }
 
-  createBookmark(userId: number, bookmarkDto: CreateBookmarkDto) {
+  createBookmark(user: User, bookmarkDto: CreateBookmarkDto) {
     return this.prisma.bookmark.create({
       data: {
         link: bookmarkDto.link,
         description: bookmarkDto.description,
         title: bookmarkDto.title,
-        userId,
+        userId: user.id,
       },
       select: {
         id: true,
@@ -64,8 +64,31 @@ export class BookmarkService {
     });
   }
 
-  updateBookmarkById(bookmarkId: number, bookmarkDto: EditBookmarkDto) {
-    return this.prisma.bookmark.update({
+  async updateBookmarkById(
+    user: User,
+    bookmarkId: number,
+    bookmarkDto: EditBookmarkDto,
+  ) {
+    const bookmark = await this.prisma.bookmark.findFirst({
+      where: {
+        id: bookmarkId,
+        userId: user.id,
+      },
+      select: {
+        id: true,
+        createdAt: true,
+        description: true,
+        link: true,
+        title: true,
+        userId: true,
+      },
+    });
+
+    if (!bookmark || bookmark.userId !== user.id) {
+      throw new BookmarkNotFoundException();
+    }
+
+    return await this.prisma.bookmark.update({
       where: {
         id: bookmarkId,
       },
@@ -84,7 +107,26 @@ export class BookmarkService {
     });
   }
 
-  deleteBookmarkById(bookmarkId: number) {
+  async deleteBookmarkById(user: User, bookmarkId: number) {
+    const bookmark = await this.prisma.bookmark.findFirst({
+      where: {
+        id: bookmarkId,
+        userId: user.id,
+      },
+      select: {
+        id: true,
+        createdAt: true,
+        description: true,
+        link: true,
+        title: true,
+        userId: true,
+      },
+    });
+
+    if (!bookmark || bookmark.userId !== user.id) {
+      throw new BookmarkNotFoundException();
+    }
+
     this.prisma.bookmark.delete({
       where: {
         id: bookmarkId,
