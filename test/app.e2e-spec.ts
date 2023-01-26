@@ -139,7 +139,21 @@ describe('App e2e', () => {
       });
     });
     describe('Edit user', () => {
-      it.todo('should edit user');
+      it('should edit user', async () => {
+        const userToUpdate = {
+          email: 'any_email_updated@email.com',
+          passwrod: '654321',
+        };
+        await pactum
+          .spec()
+          .withHeaders({
+            Authorization: `Bearer $S{userAccessToken}`,
+          })
+          .withBody(userToUpdate)
+          .patch('/users')
+          .expectStatus(200)
+          .expectBodyContains(userToUpdate.email);
+      });
     });
   });
 
