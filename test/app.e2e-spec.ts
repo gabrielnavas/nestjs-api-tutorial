@@ -35,23 +35,58 @@ describe('App e2e', () => {
   });
 
   describe('Auth', () => {
+    const dto: AuthDto = {
+      email: 'any_email@email.com',
+      password: '123456',
+    };
+
     describe('Signup', () => {
       it('should signup', async () => {
-        const dto: AuthDto = {
-          email: 'any_email@email.com',
-          password: '123456',
-        };
         await pactum
           .spec()
           .post('/auth/signup')
           .withBody(dto)
           .expectStatus(201);
       });
+      it('should throws an error if email is not correct', async () => {
+        const emailCases = [
+          '',
+          '@email.com',
+          'abc@.com',
+          'abc@emailcom',
+          'abc@email.',
+        ];
+        for (const email of emailCases) {
+          await pactum
+            .spec()
+            .post('/auth/signup')
+            .withBody({
+              ...dto,
+              email,
+            })
+            .expectStatus(400);
+        }
+      });
+      it('should throws an error if password is not correct', async () => {
+        await pactum
+          .spec()
+          .post('/auth/signup')
+          .withBody({
+            ...dto,
+            password: '',
+          })
+          .expectStatus(400);
+      });
+      it('should throws an error if no body is provided', async () => {
+        await pactum.spec().post('/auth/signup').expectStatus(400);
+      });
     });
+
     describe('Signin', () => {
-      it.todo('should signin');
+      it.todo('Should signin');
     });
   });
+
   describe('User', () => {
     describe('Get me', () => {
       it.todo('should get me');
@@ -60,6 +95,7 @@ describe('App e2e', () => {
       it.todo('should edit user');
     });
   });
+
   describe('Book', () => {
     describe('Create bookmark', () => {
       it.todo('should create bookmark');
