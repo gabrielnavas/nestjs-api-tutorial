@@ -218,7 +218,7 @@ describe('App e2e', () => {
           })
           .patch(`/bookmarks/$S{bookmarkId}`)
           .withBody(dto)
-          .expectStatus(200);
+          .expectStatus(204);
       });
     });
     describe('Delete bookmark', () => {
@@ -229,7 +229,7 @@ describe('App e2e', () => {
             Authorization: `Bearer $S{userAccessToken}`,
           })
           .delete(`/bookmarks/$S{bookmarkId}`)
-          .expectStatus(200);
+          .expectStatus(204);
       });
     });
   });

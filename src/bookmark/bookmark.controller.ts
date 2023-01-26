@@ -65,6 +65,7 @@ export class BookmarkController {
   }
 
   @Patch(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   updateBookmarkById(
     @GetUser() user: User,
     @Param('id', ParseIntPipe) bookmarkId: number,
@@ -81,6 +82,7 @@ export class BookmarkController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   deleteBookmarkById(
     @GetUser() user: User,
     @Param('id', ParseIntPipe) bookmarkId: number,
