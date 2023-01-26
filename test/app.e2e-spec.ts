@@ -180,7 +180,16 @@ describe('App e2e', () => {
       });
     });
     describe('Get bookmarks', () => {
-      it.todo('should get bookmarks');
+      it('should get bookmarks', async () => {
+        await pactum
+          .spec()
+          .withHeaders({
+            Authorization: `Bearer $S{userAccessToken}`,
+          })
+          .get('/bookmarks')
+          .expectStatus(200)
+          .inspect();
+      });
     });
     describe('Get bookmark by id', () => {
       it.todo('should get bookmark by id');
