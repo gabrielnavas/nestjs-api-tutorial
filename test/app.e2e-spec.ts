@@ -5,6 +5,7 @@ import { AppModule } from '../src/app.module';
 
 import * as pactum from 'pactum';
 import { AuthDto } from 'src/auth/dto';
+import { CreateBookmarkDto } from 'src/bookmark/dto';
 
 describe('App e2e', () => {
   let app: INestApplication;
@@ -159,7 +160,24 @@ describe('App e2e', () => {
 
   describe('Book', () => {
     describe('Create bookmark', () => {
-      it.todo('should create bookmark');
+      const dto: CreateBookmarkDto = {
+        description: 'any_description',
+        link: 'http://link.com',
+        title: 'any_title',
+      };
+      it('should create bookmark', async () => {
+        await pactum
+          .spec()
+          .withHeaders({
+            Authorization: `Bearer $S{userAccessToken}`,
+          })
+          .withBody(dto)
+          .post('/bookmarks')
+          .expectStatus(201)
+          .expectBodyContains(dto.description)
+          .expectBodyContains(dto.link)
+          .expectBodyContains(dto.title);
+      });
     });
     describe('Get bookmarks', () => {
       it.todo('should get bookmarks');
