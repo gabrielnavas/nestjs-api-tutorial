@@ -26,6 +26,8 @@ describe('App e2e', () => {
     prisma = app.get(PrismaService);
 
     await prisma.clearDb();
+
+    pactum.request.setBaseUrl('http://localhost:3333');
   });
 
   afterAll(async () => {
@@ -41,10 +43,9 @@ describe('App e2e', () => {
         };
         await pactum
           .spec()
-          .post('http://localhost:3333/auth/signup')
+          .post('/auth/signup')
           .withBody(dto)
-          .expectStatus(201)
-          .inspect();
+          .expectStatus(201);
       });
     });
     describe('Signin', () => {
