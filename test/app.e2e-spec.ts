@@ -83,7 +83,45 @@ describe('App e2e', () => {
     });
 
     describe('Signin', () => {
-      it.todo('Should signin');
+      it('should throws an error if email is not correct', async () => {
+        const emailCases = [
+          '',
+          '@email.com',
+          'abc@.com',
+          'abc@emailcom',
+          'abc@email.',
+        ];
+        for (const email of emailCases) {
+          await pactum
+            .spec()
+            .post('/auth/signin')
+            .withBody({
+              ...dto,
+              email,
+            })
+            .expectStatus(400);
+        }
+      });
+      it('should throws an error if password is not correct', async () => {
+        await pactum
+          .spec()
+          .post('/auth/signin')
+          .withBody({
+            ...dto,
+            password: '',
+          })
+          .expectStatus(400);
+      });
+      it('should throws an error if no body is provided', async () => {
+        await pactum.spec().post('/auth/signin').expectStatus(400);
+      });
+      it('should signin', async () => {
+        await pactum
+          .spec()
+          .post('/auth/signin')
+          .withBody(dto)
+          .expectStatus(200);
+      });
     });
   });
 
