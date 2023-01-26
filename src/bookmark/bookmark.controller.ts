@@ -71,11 +71,7 @@ export class BookmarkController {
     @Body() bookmarkDto: EditBookmarkDto,
   ) {
     try {
-      return this.bookmarkService.updateBookmarkById(
-        user,
-        bookmarkId,
-        bookmarkDto,
-      );
+      this.bookmarkService.updateBookmarkById(user, bookmarkId, bookmarkDto);
     } catch (ex) {
       if (ex instanceof BookmarkNotFoundException) {
         throw new BadRequestException(ex.message);
@@ -90,7 +86,7 @@ export class BookmarkController {
     @Param('id', ParseIntPipe) bookmarkId: number,
   ) {
     try {
-      return this.bookmarkService.deleteBookmarkById(user, bookmarkId);
+      this.bookmarkService.deleteBookmarkById(user, bookmarkId);
     } catch (ex) {
       if (ex instanceof BookmarkNotFoundException) {
         throw new BadRequestException(ex.message);

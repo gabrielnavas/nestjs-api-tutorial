@@ -218,12 +218,19 @@ describe('App e2e', () => {
           })
           .patch(`/bookmarks/$S{bookmarkId}`)
           .withBody(dto)
-          .expectStatus(200)
-          .expectBodyContains('$S{bookmarkId}');
+          .expectStatus(200);
       });
     });
     describe('Delete bookmark', () => {
-      it.todo('should delete bookmark by id');
+      it('should delete bookmark by id', async () => {
+        await pactum
+          .spec()
+          .withHeaders({
+            Authorization: `Bearer $S{userAccessToken}`,
+          })
+          .delete(`/bookmarks/$S{bookmarkId}`)
+          .expectStatus(200);
+      });
     });
   });
 });
