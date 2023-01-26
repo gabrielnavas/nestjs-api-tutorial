@@ -188,7 +188,7 @@ describe('App e2e', () => {
           })
           .get('/bookmarks')
           .expectStatus(200)
-          .inspect();
+          .expectJsonLength(1);
       });
     });
     describe('Get bookmark by id', () => {
