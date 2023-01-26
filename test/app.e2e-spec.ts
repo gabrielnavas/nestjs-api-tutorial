@@ -176,7 +176,8 @@ describe('App e2e', () => {
           .expectStatus(201)
           .expectBodyContains(dto.description)
           .expectBodyContains(dto.link)
-          .expectBodyContains(dto.title);
+          .expectBodyContains(dto.title)
+          .stores('bookmarkId', 'id');
       });
     });
     describe('Get bookmarks', () => {
@@ -192,7 +193,15 @@ describe('App e2e', () => {
       });
     });
     describe('Get bookmark by id', () => {
-      it.todo('should get bookmark by id');
+      it('should get bookmark by id', async () => {
+        await pactum
+          .spec()
+          .withHeaders({
+            Authorization: `Bearer $S{userAccessToken}`,
+          })
+          .get(`/bookmarks/$S{bookmarkId}`)
+          .expectStatus(200);
+      });
     });
     describe('Edit bookmark', () => {
       it.todo('should edit bookmark by id');
