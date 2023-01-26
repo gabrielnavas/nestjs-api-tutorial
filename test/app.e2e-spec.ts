@@ -154,10 +154,10 @@ describe('App e2e', () => {
       it.todo('should get bookmark by id');
     });
     describe('Edit bookmark', () => {
-      it.todo('should edit bookmark');
+      it.todo('should edit bookmark by id');
     });
     describe('Delete bookmark', () => {
-      it.todo('should delete bookmark');
+      it.todo('should delete bookmark by id');
     });
   });
 });
